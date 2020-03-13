@@ -36,12 +36,11 @@ app.post('/upload', function (request, response, next) {
     genre: request.body.genre,
     link: request.body.link
   })
-  response.redirect('uploadSuccess');
   demo.save((error, result) => {
     if(error) {
         return response.status(500).send(error);
     }
-    response.send(result.result);
+    response.redirect('uploadSuccess');
   });
 });
 
