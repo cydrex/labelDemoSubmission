@@ -1,0 +1,19 @@
+<ul class="nav nav-tabs nav-justified md-tabs indigo" id="myTabJust" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="non-approve" data-toggle="tab" href="#nonapproved" role="tab" aria-controls="nonapproved"
+      aria-selected="true">Non approved</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="approved" data-toggle="tab" href="#approved-demos" role="tab" aria-controls="approved-demos"
+      aria-selected="false">Approved</a>
+  </li>
+</ul>
+
+<div class="tab-content card pt-5" id="myTabContentJust">
+  <div class="tab-pane fade show active" id="nonapproved" role="tabpanel" aria-labelledby="non-approve">
+      {{>demos}}
+  </div>
+  <div class="tab-pane fade" id="approved-demos" role="tabpanel" aria-labelledby="approved">
+      {{>getApprovedDemos}}
+  </div>
+</div>
