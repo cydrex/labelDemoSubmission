@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 var express  = require('express');
 var handlebars = require('express-handlebars');
-require('dotenv').config()
+require('dotenv').config();
 var path = require('path');
 const mongoose = require('mongoose')
 mongoose.set('useFindAndModify', false);
