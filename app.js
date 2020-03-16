@@ -7,6 +7,22 @@ require('dotenv').config();
 var path = require('path');
 const mongoose = require('mongoose')
 mongoose.set('useFindAndModify', false);
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+
+
+
+// requires the model with Passport-Local Mongoose plugged in
+const User = require('./models/userdb');
+
+// use static authenticate method of model in LocalStrategy
+passport.use(new LocalStrategy(User.authenticate()));
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 // express
 var app = express();
@@ -14,6 +30,7 @@ var app = express();
 // express-handlebars
 app.engine('.hbs', handlebars({defaultLayout: 'default', extname: '.hbs'}));
 app.set('view engine', '.hbs');
+
 
  
 // static content
@@ -84,6 +101,24 @@ app.post('/approve/:id', function(req,res) {
       console.log('approved!');
       res.redirect('getDemos');
     }
+  });
+});
+
+//register
+app.post('/register', function(req,res) {
+  User.register({username:'username', active: false}, 'password', function(err, user) {
+    if (err) { console.log(err) 
+    }
+  });
+});
+
+//login
+app.post('/login', function(req,res) {
+  var authenticate = User.authenticate();
+  authenticate('username', 'password', function(err, result) {
+    if (err) { console.log(err)}
+
+    // Value 'result' is set to false. The user could not be authenticated since the user is not active
   });
 });
 
