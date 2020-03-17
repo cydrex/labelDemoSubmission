@@ -105,22 +105,29 @@ app.post('/approve/:id', function(req,res) {
 });
 
 //register
-app.post('/register', function(req,res) {
-  User.register({username:'username', active: false}, 'password', function(err, user) {
-    if (err) { console.log(err) 
+app.post('/register', function(req, res, next) {
+  const username = req.body.username,
+      password = req.body.password;
+  User.register(new User({ username: username }), password, function(err, user) {
+    if (err) { console.log(err)
+    } else {
+
+
+    console.log('user registered!');
+
+    res.redirect('/getDemos');  
     }
   });
 });
 
-//login
-app.post('/login', function(req,res) {
-  var authenticate = User.authenticate();
-  authenticate('username', 'password', function(err, result) {
-    if (err) { console.log(err)}
-
-    // Value 'result' is set to false. The user could not be authenticated since the user is not active
-  });
+//login     fix ('username', 'password', 
+app.get('/login', function(req, res) {
+  res.render('login', {user: req.user});
 });
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {
+    res.redirect('/');
+  });
 
 //database connection
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
