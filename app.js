@@ -12,7 +12,6 @@ var LocalStrategy = require('passport-local').Strategy;
 
 
 
-
 // requires the model with Passport-Local Mongoose plugged in
 const User = require('./models/userdb');
 
@@ -34,6 +33,8 @@ app.set('view engine', '.hbs');
 
  
 // static content
+app.use(passport.initialize());
+app.use(passport.session());  
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({extended: true}))
@@ -120,14 +121,20 @@ app.post('/register', function(req, res, next) {
   });
 });
 
-//login     fix ('username', 'password', 
+//login
 app.get('/login', function(req, res) {
   res.render('login', {user: req.user});
 });
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {
-    res.redirect('/');
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function(req, res) {
+    res.redirect('/getDemos');
   });
+
+//logout
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
 
 //database connection
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
