@@ -13,11 +13,14 @@
         <a class="nav-link" href="/uploadFiles">upload files</a>
       </li>
     </ul>
+
     <ul class="navbar-nav navbar-right">
       <li class="nav-item active">
-        <a class="btn btn-dark navbar-btn" href="/login">Log in</a>
+              {{#if user}} {{>authNav }} {{ else }} {{>unauthNav }} {{/if}}
       </li>
     </ul>
+
+          
 
   </div>
 </nav>

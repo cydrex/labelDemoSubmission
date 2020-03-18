@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 var express  = require('express');
+var session = require('express-session');
 var handlebars = require('express-handlebars');
 require('dotenv').config();
 var path = require('path');
@@ -10,28 +11,19 @@ mongoose.set('useFindAndModify', false);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-
-
-// requires the model with Passport-Local Mongoose plugged in
-const User = require('./models/userdb');
-
-// use static authenticate method of model in LocalStrategy
-passport.use(new LocalStrategy(User.authenticate()));
-
-// use static serialize and deserialize of model for passport session support
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-
 // express
 var app = express();
  
 // express-handlebars
 app.engine('.hbs', handlebars({defaultLayout: 'default', extname: '.hbs'}));
 app.set('view engine', '.hbs');
-
-
  
+app.use(session({
+    secret: 'cydrex',
+    resave: false,
+    saveUninitialized: false
+}));
+
 // static content
 app.use(passport.initialize());
 app.use(passport.session());  
@@ -43,9 +35,21 @@ app.use("/bootstrap", express.static(path.join(__dirname, '/node_modules/bootstr
 app.use("/popper", express.static(path.join(__dirname, '/node_modules/popper.js/dist')));
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use("/img", express.static(path.join(__dirname, '/public/img')));
+app.use(function (req, res, next) {
+  res.locals.user = req.user || null;
+  next();
+});
 
 
+// requires the model with Passport-Local Mongoose plugged in
+const User = require('./models/userdb');
 
+// use static authenticate method of model in LocalStrategy
+passport.use(new LocalStrategy(User.authenticate()));
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //db shiz
 const database = require('./models/database.js');
@@ -67,8 +71,7 @@ app.post('/upload', function (request, response, next) {
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/getDemos')
-  console.log(req.user)
+  res.redirect('/login')
 }
 
 //list unapproved demos
@@ -140,6 +143,7 @@ app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
+
 
 //database connection
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
