@@ -44,6 +44,9 @@ app.use("/popper", express.static(path.join(__dirname, '/node_modules/popper.js/
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use("/img", express.static(path.join(__dirname, '/public/img')));
 
+
+
+
 //db shiz
 const database = require('./models/database.js');
 //upload demo
@@ -62,8 +65,14 @@ app.post('/upload', function (request, response, next) {
   });
 });
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/getDemos')
+  console.log(req.user)
+}
+
 //list unapproved demos
-app.get('/getDemos', function (req, res)  {
+app.get('/getDemos', ensureAuthenticated, function (req, res, next)  {
   database.find({ approved: false }).then(unapproved => {
     database.find({ approved: true }).then(approved => {
         res.render('demos', {
@@ -122,10 +131,6 @@ app.post('/register', function(req, res, next) {
 });
 
 //login
-app.get('/login', function(req, res) {
-  res.render('login', {user: req.user});
-});
-
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function(req, res) {
     res.redirect('/getDemos');
   });
