@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+var upload = multer({storage: storage});
 var express  = require('express');
 var session = require('express-session');
 var handlebars = require('express-handlebars');
@@ -40,6 +40,22 @@ app.use(function (req, res, next) {
   next();
 });
 
+//multer
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+      cb(null, './demos');
+   },
+  filename: function (req, file, cb) {
+    console.log(file)
+      cb(null , file.originalname);
+  }
+});
+
+var upload = multer({storage: storage,
+  onFileUploadStart: function (file) {
+    console.log(file.originalname + ' is starting ...')
+  },
+});
 
 // requires the model with Passport-Local Mongoose plugged in
 const User = require('./models/userdb');
@@ -53,13 +69,15 @@ passport.deserializeUser(User.deserializeUser());
 
 //db shiz
 const database = require('./models/database.js');
+
+
 //upload demo
-app.post('/upload', function (request, response, next) {
+app.post('/upload', upload.single('demo'), function (request, response, next) {
   const demo = new database({ 
     name: request.body.name,
     title: request.body.title,
     genre: request.body.genre,
-    link: request.body.link
+    demo: request.body.demo
   })
   demo.save((error, result) => {
     if(error) {
