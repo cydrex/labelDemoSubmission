@@ -6,6 +6,7 @@ const database = new mongoose.Schema({
 	name: String,
 	title: String,
 	genre: String,
-	demo: String
+	demo: String,
+	demopath: String
 });
 module.exports = mongoose.model("detail", database);

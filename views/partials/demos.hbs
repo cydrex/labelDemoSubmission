@@ -15,7 +15,7 @@
           <th scope="row">{{ name }}</th>
           <td>{{ title }}</td>
           <td>{{ genre }}</td>
-          <td><div class="sc-embed" sc_url="{{ link }}"></div>{{ link }}</td>
+          <td><div class="sc-embed" sc_url="{{ demopath }}"></div>{{ demopath }}</td>
           <td><form method="POST" action="/approve/{{ _id }}"><button type="submit" class="btn btn-outline-success waves-effect btn-sm">Approve</button></form>
           <form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-outline-danger waves-effect btn-sm">Delete</button></form></td>
       </tr>

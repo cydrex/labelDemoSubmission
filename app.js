@@ -35,6 +35,8 @@ app.use("/bootstrap", express.static(path.join(__dirname, '/node_modules/bootstr
 app.use("/popper", express.static(path.join(__dirname, '/node_modules/popper.js/dist')));
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use("/img", express.static(path.join(__dirname, '/public/img')));
+var demopath = path.resolve(__dirname,'public');  
+app.use(express.static(demopath));
 app.use(function (req, res, next) {
   res.locals.user = req.user || null;
   next();
@@ -73,11 +75,13 @@ const database = require('./models/database.js');
 
 //upload demo
 app.post('/upload', upload.single('demo'), function (request, response, next) {
+  var x = 'demos/'+request.file.originalname;
   const demo = new database({ 
     name: request.body.name,
     title: request.body.title,
     genre: request.body.genre,
-    demo: request.body.demo
+    demo: request.body.demo,
+    demopath: x
   })
   demo.save((error, result) => {
     if(error) {
