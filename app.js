@@ -35,7 +35,8 @@ app.use("/bootstrap", express.static(path.join(__dirname, '/node_modules/bootstr
 app.use("/popper", express.static(path.join(__dirname, '/node_modules/popper.js/dist')));
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use("/img", express.static(path.join(__dirname, '/public/img')));
-var demopath = path.resolve(__dirname,'public');  
+var demopath = path.resolve(__dirname,'demos');
+app.use("/audiojs", express.static(path.join(__dirname, 'audiojs')));
 app.use(express.static(demopath));
 app.use(function (req, res, next) {
   res.locals.user = req.user || null;
@@ -111,6 +112,7 @@ app.get('/getDemos', ensureAuthenticated, function (req, res, next)  {
     console.log(error);
    });
 });
+
 
 //delete from db
 app.post('/delete/:id', function(req,res) {
