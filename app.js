@@ -70,7 +70,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 //db shiz
-const database = require('./models/database.js');
+const database = require('./models/Demo.js');
+const SignupCode = require('./models/signupCode.js');
+
 
 
 //upload demo
@@ -122,7 +124,8 @@ app.post('/delete/:id', function(req,res) {
       if(err) {
           console.log(err);
       } else {
-          const filePath = path.join(__dirname, data.demopath);
+        const filePath = path.join(__dirname, './demos/' + data.demopath);
+        console.log(filePath);
           fs.unlink(filePath, function(err) {
               if(err) {
                   console.log(err);
@@ -153,16 +156,28 @@ app.post('/approve/:id', function(req,res) {
 //register
 app.post('/register', function(req, res, next) {
   const username = req.body.username,
-      password = req.body.password;
-  User.register(new User({ username: username }), password, function(err, user) {
-    if (err) { console.log(err)
-    } else {
+      password = req.body.password,
+      registercode = req.body.registercode;
+  SignupCode.findOne({ pin: registercode, active: true }, function(err, data) {
+      if (err) {
+          console.log(err);
+      } else {
+        SignupCode.updateOne({ pin: registercode }, { $set: { active: false } }, function(err,data) {
+              if (err) {
+                  console.log(err);
+              } else {
+                  User.register(new User({ username: username }), password, function(err, user) {
+                      if (err) {
+                          console.log(err)
+                      } else {
+                          console.log('user registered!');
 
-
-    console.log('user registered!');
-
-    res.redirect('/getDemos');  
-    }
+                          res.redirect('/getDemos');  
+                      }
+                  });
+              }
+          });
+      }
   });
 });
 

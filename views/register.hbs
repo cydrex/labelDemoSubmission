@@ -12,9 +12,25 @@
         <input type="password" class="form-control" id="password" type="password" name="password" required="true" value="">
     </div>
 
+    <input type="hidden" class="form-control" id="registercode" name="code" required="true" value="">
+
         
         <div class="form-group">
             <button class="btn btn-primary bg-dark" type="register">register</button>
         </div>
+        
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function(event) {
+    const urlParams = new URLSearchParams(window.location.search),
+      registrationCode = urlParams.get('registrationCode'),
+      input = document.querySelector('#registercode');
+
+    if (registrationCode && registrationCode.length) {
+        input.value = registrationCode;
+    } else {
+        console.log('No registration query parameter found!');
+    }
+});
+</script>
 </form>
