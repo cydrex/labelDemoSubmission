@@ -50,17 +50,13 @@ app.use(function (req, res, next) {
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
       cb(null, './demos');
-   },
-  filename: function (req, file, cb) {
-    console.log(file)
-      cb(null , file.originalname);
-  }
-});
-
-var upload = multer({storage: storage,
-  onFileUploadStart: function (file) {
-    console.log(file.originalname + ' is starting ...')
   },
+  filename: function (req, file, cb) {
+      if(req.demo) {
+          return cb(null, req.demo.demopath);
+      }
+      return cb(null , file.originalname);
+  }
 });
 
 // requires the model with Passport-Local Mongoose plugged in
@@ -78,22 +74,31 @@ const database = require('./models/database.js');
 
 
 //upload demo
-app.post('/upload', upload.single('demo'), function (request, response, next) {
-  const id = uuid.v4();
-  var x = 'demos/'+id+request.file.originalname;
-  const demo = new database({ 
-    name: request.body.name,
-    title: request.body.title,
-    genre: request.body.genre,
-    demo: request.body.demo,
-    demopath: x
-  })
+function uploadDemoMiddleware(req, res, next) {
+  const id = uuid.v4(),
+      title = req.body.title,
+      filepath = 'demos/' + title + id,
+      demo = new database({ 
+          name: req.body.name,
+          title: title,
+          genre: req.body.genre,
+          demo: req.body.demo,
+          demopath: filepath
+      });
+
   demo.save((error, result) => {
-    if(error) {
-        return response.status(500).send(error);
-    }
-    response.redirect('uploadSuccess');
+      if(error) {
+          return next(err);
+      }
+
+      req.demo = result;
+      next();
   });
+}
+
+
+app.post('/upload', uploadDemoMiddleware, upload.single('demo'), function (req, res) {
+  res.redirect('uploadSuccess');
 });
 
 function ensureAuthenticated(req, res, next) {
