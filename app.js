@@ -6,6 +6,8 @@ var session = require('express-session');
 var handlebars = require('express-handlebars');
 require('dotenv').config();
 var path = require('path');
+const fs = require('fs');
+var uuid = require('uuid');
 const mongoose = require('mongoose')
 mongoose.set('useFindAndModify', false);
 var passport = require('passport');
@@ -36,6 +38,7 @@ app.use("/popper", express.static(path.join(__dirname, '/node_modules/popper.js/
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use("/img", express.static(path.join(__dirname, '/public/img')));
 var demopath = path.resolve(__dirname,'demos');
+app.use("/demos", express.static(path.join(__dirname, '/demos')));
 app.use("/audiojs", express.static(path.join(__dirname, 'audiojs')));
 app.use(express.static(demopath));
 app.use(function (req, res, next) {
@@ -76,7 +79,8 @@ const database = require('./models/database.js');
 
 //upload demo
 app.post('/upload', upload.single('demo'), function (request, response, next) {
-  var x = 'demos/'+request.file.originalname;
+  const id = uuid.v4();
+  var x = 'demos/'+id+request.file.originalname;
   const demo = new database({ 
     name: request.body.name,
     title: request.body.title,
@@ -121,8 +125,16 @@ app.post('/delete/:id', function(req,res) {
       if(err) {
           console.log(err);
       } else {
-          console.log("Deleted");
-          res.redirect("/getDemos");
+          const filePath = path.join(__dirname, data.demopath);
+          fs.unlink(filePath, function(err) {
+              if(err) {
+                  console.log(err);
+                  return;
+              } else {
+                  console.log("Deleted");
+                  res.redirect("/getDemos");
+              }
+          });
       }
   });
 });
@@ -136,7 +148,7 @@ app.post('/approve/:id', function(req,res) {
       res.redirect("/error");
     } else {
       console.log('approved!');
-      res.redirect('getDemos');
+      res.redirect('/getDemos');
     }
   });
 });

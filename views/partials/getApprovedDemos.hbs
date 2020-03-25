@@ -15,7 +15,8 @@
           <th scope="row">{{ name }}</th>
           <td>{{ title }}</td>
           <td>{{ genre }}</td>
-          <td>{{ link }}</td>
+          <td><div class="player">
+          </div><audio src="/{{demopath}}" preload="auto" /></td>
           <td><form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-outline-danger waves-effect">Delete</button></form></td>
           </td>
       </tr>

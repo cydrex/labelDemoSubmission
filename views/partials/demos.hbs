@@ -1,8 +1,9 @@
 
 <table class="table">
   <thead>
+
     <tr>
-      <th scope="col">Name</th>
+      <th scope="col">Artist name</th>
       <th scope="col">Title</th>
       <th scope="col">Genre</th>
       <th scope="col">demo</th>
@@ -12,15 +13,27 @@
   
   <tbody>
     {{#each unapproved }}
+      <div class="container">
+    <div class="row">
       <tr>
           <th scope="row">{{ name }}</th>
           <td>{{ title }}</td>
-          <td>{{ genre }}</td>
+          <td>{{ genre }}</td>  
           <td><div class="player">
           </div><audio src="/{{demopath}}" preload="auto" /></td>
           <td><form method="POST" action="/approve/{{ _id }}"><button type="submit" class="btn btn-outline-success waves-effect btn-sm">Approve</button></form>
           <form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-outline-danger waves-effect btn-sm">Delete</button></form></td>
       </tr>
+    </div>
+    <div class="row">
+        <div class="col-md-10"></div>
+    </div>
+</div>
+
+
+
+
+
     {{/each}}
   </tbody>
 </table>
