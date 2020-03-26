@@ -13,10 +13,13 @@
     <p class="card-text">Track title: {{ title }}</p>
     <p class="card-text">Genre: {{ genre }}</p>
         <p class="card-text">Contact email: {{ email }}</p>   
-<audio id="player" controls>
+<audio class="player" controls>
     <source src="/{{demopath}}" type="audio/mp3" />
 </audio>
   </div>
 </div>
 <br>
 {{/each}}
+<script type="text/javascript">
+  Array.from(document.querySelectorAll('.js-player')).map(p => new Plyr(p));
+</script>
