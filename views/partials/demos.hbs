@@ -37,3 +37,27 @@
     {{/each}}
   </tbody>
 </table>
+
+
+
+{{#each unapproved }}
+<div class="card text-center border border-info">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item">
+        <form method="POST" action="/approve/{{ _id }}"><button type="submit" class="btn btn-outline-success waves-effect btn-sm">Approve</button></form>      </li>
+      <li class="nav-item">
+        <form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-outline-danger waves-effect btn-sm">Delete</button></form>      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Artisit name: {{ name }}</h5>
+    <p class="card-text">Track title: {{ title }}</p>
+    <p class="card-text">Genre: {{ genre }}</p>
+<audio id="player" controls>
+    <source src="/{{demopath}}" type="audio/mp3" />
+</audio>
+  </div>
+</div>
+<br>
+{{/each}}

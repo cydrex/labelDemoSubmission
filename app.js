@@ -37,6 +37,7 @@ app.use("/popper", express.static(path.join(__dirname, '/node_modules/popper.js/
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use("/img", express.static(path.join(__dirname, '/public/img')));
 var demopath = path.resolve(__dirname,'demos');
+app.use("/public", express.static(path.join(__dirname, '/public')));
 app.use("/demos", express.static(path.join(__dirname, '/demos')));
 app.use("/audiojs", express.static(path.join(__dirname, 'audiojs')));
 app.use(express.static(demopath));
