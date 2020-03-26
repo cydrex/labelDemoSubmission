@@ -83,7 +83,7 @@ app.post('/upload', upload.single('demo'), function (req, res) {
       name: req.body.name,
       title: req.body.title,
       genre: req.body.genre,
-      demo: req.body.demo,
+      email: req.body.email,
       demopath: req.file.filename
   });
 

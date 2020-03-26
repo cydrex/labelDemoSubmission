@@ -6,7 +6,7 @@ const demoSchema = new mongoose.Schema({
     name: String,
     title: String,
     genre: String,
-    demo: String,
+    email: String,
     demopath: String
 });
 module.exports = mongoose.model("Demo", demoSchema);
