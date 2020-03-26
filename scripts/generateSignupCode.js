@@ -18,6 +18,6 @@ db.once('open', () => {
             console.log(err);
             return;
         }
-        console.log('Code generated! your register code is:', result.pin);
+        console.log('Code generated! your register url is: http://localhost:3000/register?registrationCode=' + result.pin);
     });
 });

@@ -156,29 +156,35 @@ app.post('/approve/:id', function(req,res) {
 //register
 app.post('/register', function(req, res, next) {
   const username = req.body.username,
-      password = req.body.password,
-      registercode = req.body.registercode;
-  SignupCode.findOne({ pin: registercode, active: true }, function(err, data) {
-      if (err) {
-          console.log(err);
-      } else {
-        SignupCode.updateOne({ pin: registercode }, { $set: { active: false } }, function(err,data) {
-              if (err) {
-                  console.log(err);
-              } else {
-                  User.register(new User({ username: username }), password, function(err, user) {
-                      if (err) {
-                          console.log(err)
-                      } else {
-                          console.log('user registered!');
-
-                          res.redirect('/getDemos');  
-                      }
-                  });
-              }
-          });
+    password = req.body.password,
+    registercode = req.body.registercode;
+SignupCode.findOne({ pin: registercode, active: true }, function(err, signupCode) {
+  if (err) {
+      console.log(err);
+  } else {
+      if(!signupCode) {
+          console.log(signupCode);
+          console.log('No signup code found!');
+          res.redirect('/error-page');
+          return;
       }
-  });
+    SignupCode.updateOne({ pin: registercode }, { $set: { active: false } }, function(err,data) {
+          if (err) {
+              console.log(err);
+          } else {
+              User.register(new User({ username: username }), password, function(err, user) {
+                  if (err) {
+                      console.log(err)
+                  } else {
+                      console.log('user registered!');
+
+                      res.redirect('/getDemos');  
+                  }
+              });
+          }
+      });
+  }
+});
 });
 
 //login
