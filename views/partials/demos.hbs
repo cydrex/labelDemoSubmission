@@ -1,15 +1,15 @@
 {{#each unapproved }}
-<div class="card text-center border border-info w-50 mx-auto">
+<div class="card text-center border border-dark w-50 mx-auto bg-darkmaterial text-light">
   <div class="card-header"> {{ name }} - {{ title }}
-    <ul class="nav nav-pills card-header-pills">
+    <ul class="nav nav-pills card-header-pills d-flex justify-content-center">
       <li class="nav-item">
-        <form method="POST" action="/approve/{{ _id }}"><button type="submit" class="btn btn-outline-success waves-effect btn-sm">Approve</button></form>      </li>
+          <form method="POST" action="/approve/{{ _id }}"><button type="submit" class="btn btn-success">Approve</button></form>      </li>
       <li class="nav-item">
-        <form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-outline-danger waves-effect btn-sm">Delete</button></form>      </li>
+        <form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-danger">Delete</button></form>      </li>
     </ul>
   </div>
-  <div class="card-body">
-    <h5 class="card-title">Artisit name: {{ name }}</h5>
+  <div class="card-body bg-greymaterial text-light">
+    <h5 class="card-title">Artist name(s): {{ name }}</h5>
     <p class="card-text">Track title: {{ title }}</p>
     <p class="card-text">Genre: {{ genre }}</p>
         <p class="card-text">Contact email: {{ email }}</p>   

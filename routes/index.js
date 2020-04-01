@@ -14,8 +14,8 @@ router.get('/register', function(req, res, next) {
   res.render('register', { title: 'register' });
 });
 
-router.get('/uploadFiles', function(req, res, next) {
-  res.render('uploadFiles', { title: 'upload your files' });
+router.get('/demosubmission', function(req, res, next) {
+  res.render('uploadFiles', { title: 'Submit your demo!' });
 });
 
 router.get('/demos', function(req, res, next) {
@@ -23,7 +23,7 @@ router.get('/demos', function(req, res, next) {
 });
 
 router.get('/uploadSuccess', function(req, res, next) {
-  res.render('uploadSuccess', { title: 'Upload was succesful!!' });
+  res.render('uploadSuccess', { title: 'Upload was succesful!' });
 });
 
 module.exports = router;
