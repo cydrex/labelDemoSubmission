@@ -1,19 +1,19 @@
 <ul class="nav nav-tabs nav-justified md-tabs indigo bg-materialbck" id="myTabJust" role="tablist">
   <li class="nav-item text-white">
-    <a class="nav-link text-white active" id="non-approve" data-toggle="tab" href="#nonapproved" role="tab" aria-controls="nonapproved"
-      aria-selected="true">Non approved</a>
+    <a class="nav-link text-white active" id="non-approve" data-toggle="tab" href="#nonapproved" role="tab"
+      aria-controls="nonapproved" aria-selected="true">Non approved</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-white" id="approved" data-toggle="tab" href="#approved-demos" role="tab" aria-controls="approved-demos"
-      aria-selected="false">Approved</a>
+    <a class="nav-link text-white" id="approved" data-toggle="tab" href="#approved-demos" role="tab"
+      aria-controls="approved-demos" aria-selected="false">Approved</a>
   </li>
 </ul>
 
 <div class="tab-content card pt-5 bg-unique-color-dark" id="myTabContentJust">
   <div class="tab-pane fade show active" id="nonapproved" role="tabpanel" aria-labelledby="non-approve">
-      {{>demos}}
+    {{>demos}}
   </div>
   <div class="tab-pane fade" id="approved-demos" role="tabpanel" aria-labelledby="approved">
-      {{>getApprovedDemos}}
+    {{>getApprovedDemos}}
   </div>
 </div>

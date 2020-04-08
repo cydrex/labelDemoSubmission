@@ -3,25 +3,27 @@
   <div class="card-header"> {{ name }} - {{ title }}
     <ul class="nav nav-pills card-header-pills d-flex justify-content-center">
       <li class="nav-item">
-        <form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-danger">Delete</button></form>      </li>
+        <form method="POST" action="/delete/{{ _id }}"><button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </li>
     </ul>
   </div>
   <div class="card-body bg-greymaterial text-light">
     <h5 class="card-title">Artist name(s): {{ name }}</h5>
     <p class="card-text">Track title: {{ title }}</p>
     <p class="card-text">Genre: {{ genre }}</p>
-        <p class="card-text">Contact email: {{ email }}</p>   
-<audio class="player" controls>
-    <source src="/{{demopath}}" type="audio/mp3" />
-</audio>
+    <p class="card-text">Contact email: {{ email }}</p>
+    <audio class="player" controls>
+      <source src="/{{demopath}}" type="audio/mp3" />
+    </audio>
   </div>
 </div>
 <br>
 {{/each}}
 <script type="text/javascript">
-var options = {
+  var options = {
     controls: ['play-large', 'play', 'progress', 'current-time', 'captions', 'pip', 'airplay', 'fullscreen']
-};
+  };
 
-Array.from(document.querySelectorAll('.player')).map(p => new Plyr(p, options));
+  Array.from(document.querySelectorAll('.player')).map(p => new Plyr(p, options));
 </script>

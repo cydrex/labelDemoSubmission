@@ -1,45 +1,50 @@
 <div class="bg-materialbck">
-  <div class="bg-demo-upload">
-      <div class=" w-50 mx-auto bg-demosub">
-        <h1 class="text-white">Upload your demo!</h1>
-        <div class="alert bg-dark-m text-white" role="alert">
-        Please do not send all of your music, only send few best tracks you have made.
-        </div>  
-
-        <form method="POST" action="/upload" enctype="multipart/form-data">
-            <div class="form-group">        
-                <label for="formGroupExampleInput" class="bmd-label-floating text-white">Artist name(s)</label>
-                <input type="text" class="form-control text-white" id="name" type="text" name="name" required="true" value="">
+    <div class="bg-demo-upload">
+        <div class=" w-50 mx-auto bg-demosub">
+            <h1 class="text-white">Upload your demo!</h1>
+            <div class="alert bg-dark-m text-white" role="alert">
+                Please do not send all of your music, only send few best tracks you have made.
             </div>
 
-            <div class="form-group">
-                <label for="formGroupExampleInput" class="bmd-label-floating text-white">Track title</label>
-                <input type="text" class="form-control text-white" id="title" type="text" name="title" required="true" value="">
-            </div>
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="formGroupExampleInput" class="bmd-label-floating text-white">Artist name(s)</label>
+                    <input type="text" class="form-control text-white" id="name" type="text" name="name" required="true"
+                        value="">
+                </div>
 
-            <div class="form-group">
-                <label for="formGroupExampleInput" class="bmd-label-floating text-white">genre</label>
-                <input type="text" class="form-control text-white" id="genre" type="text" name="genre" required="true" value="">
-            </div>
+                <div class="form-group">
+                    <label for="formGroupExampleInput" class="bmd-label-floating text-white">Track title</label>
+                    <input type="text" class="form-control text-white" id="title" type="text" name="title"
+                        required="true" value="">
+                </div>
 
-            <div class="form-group">
-                <label for="formGroupExampleInput" class="bmd-label-floating text-white">Contact email</label>
-                <input type="text" class="form-control text-white" id="email" type="email" name="email" required="true" value="">
-            </div>
-            
-            <label class="btn btn-deep-grey text-white">
-                Select demo <input type="file" name="demo" accept=".mp3" required="true" hidden>
-            </label>
-            <div class="form-group">
-                <button class="btn btn-deep-purple text-success" type="submit">Send demo!</button>
-                <button class="btn btn-deep-purple text-danger" type="cancel" onclick="window.location='/';return false;">Cancel</button>
-            </div>
+                <div class="form-group">
+                    <label for="formGroupExampleInput" class="bmd-label-floating text-white">genre</label>
+                    <input type="text" class="form-control text-white" id="genre" type="text" name="genre"
+                        required="true" value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="formGroupExampleInput" class="bmd-label-floating text-white">Contact email</label>
+                    <input type="text" class="form-control text-white" id="email" type="email" name="email"
+                        required="true" value="">
+                </div>
+
+                <label class="btn btn-deep-grey text-white">
+                    Select demo <input type="file" name="demo" accept=".mp3" required="true" hidden>
+                </label>
+                <div class="form-group">
+                    <button class="btn btn-deep-purple text-success" type="submit">Send demo!</button>
+                    <button class="btn btn-deep-purple text-danger" type="cancel"
+                        onclick="window.location='/';return false;">Cancel</button>
+                </div>
                 <div class="form-group text-white">
-                By clicking send demo you agree to our <a href="/storedinfo" class="text-info">upload rules</a>
-                
-            </div>
-        </form> 
-        <br>
+                    By clicking send demo you agree to our <a href="/storedinfo" class="text-info">upload rules</a>
+
+                </div>
+            </form>
+            <br>
+        </div>
     </div>
-  </div>
 </div>

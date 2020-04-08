@@ -1,6 +1,6 @@
 const mongoose = require('mongoose'),
     uuid = require('uuid');
-    SignupCode = require('../models/signupCode.js');
+SignupCode = require('../models/signupCode.js');
 
 require('dotenv').config();
 
@@ -14,7 +14,7 @@ db.once('open', () => {
     });
 
     code.save((err, result) => {
-        if(err) {
+        if (err) {
             console.log(err);
             return;
         }

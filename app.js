@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const multer = require('multer');
-var express  = require('express');
+var express = require('express');
 var session = require('express-session');
 var handlebars = require('express-handlebars');
 require('dotenv').config();
@@ -14,29 +14,29 @@ var LocalStrategy = require('passport-local').Strategy;
 
 // express
 var app = express();
- 
+
 // express-handlebars
-app.engine('.hbs', handlebars({defaultLayout: 'default', extname: '.hbs'}));
+app.engine('.hbs', handlebars({ defaultLayout: 'default', extname: '.hbs' }));
 app.set('view engine', '.hbs');
- 
+
 app.use(session({
-    secret: 'cydrex',
-    resave: false,
-    saveUninitialized: false
+  secret: 'cydrex',
+  resave: false,
+  saveUninitialized: false
 }));
 
 // static content
 app.use(passport.initialize());
-app.use(passport.session());  
+app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/bootstrap", express.static(path.join(__dirname, '/node_modules/bootstrap-material-design/dist')));
 app.use("/popper", express.static(path.join(__dirname, '/node_modules/popper.js/dist')));
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 app.use("/img", express.static(path.join(__dirname, '/public/img')));
-var demopath = path.resolve(__dirname,'demos');
+var demopath = path.resolve(__dirname, 'demos');
 app.use("/public", express.static(path.join(__dirname, '/public')));
 app.use("/demos", express.static(path.join(__dirname, '/demos')));
 app.use("/audiojs", express.static(path.join(__dirname, 'audiojs')));
@@ -48,17 +48,17 @@ app.use(function (req, res, next) {
 
 //multer
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-      cb(null, './demos');
+  destination: function (req, file, cb) {
+    cb(null, './demos');
   },
   filename: function (req, file, cb) {
-      const id = uuid.v4(),
-          filename = id + file.originalname;
+    const id = uuid.v4(),
+      filename = id + file.originalname;
 
-      return cb(null , filename);
+    return cb(null, filename);
   }
 });
-var upload = multer({storage: storage});
+var upload = multer({ storage: storage });
 
 // requires the model with Passport-Local Mongoose plugged in
 const User = require('./models/userdb');
@@ -79,20 +79,20 @@ const SignupCode = require('./models/signupCode.js');
 //upload demo
 app.post('/upload', upload.single('demo'), function (req, res) {
   console.log(req.file);
-  const demo = new database({ 
-      name: req.body.name,
-      title: req.body.title,
-      genre: req.body.genre,
-      email: req.body.email,
-      demopath: req.file.filename
+  const demo = new database({
+    name: req.body.name,
+    title: req.body.title,
+    genre: req.body.genre,
+    email: req.body.email,
+    demopath: req.file.filename
   });
 
   demo.save((error, result) => {
-      if(error) {
-          return next(err);
-      }
+    if (error) {
+      return next(err);
+    }
 
-      res.redirect('uploadSuccess');
+    res.redirect('uploadSuccess');
   });
 });
 
@@ -102,46 +102,46 @@ function ensureAuthenticated(req, res, next) {
 }
 
 //list unapproved demos
-app.get('/getDemos', ensureAuthenticated, function (req, res, next)  {
+app.get('/getDemos', ensureAuthenticated, function (req, res, next) {
   database.find({ approved: false }).then(unapproved => {
     database.find({ approved: true }).then(approved => {
-        res.render('demos', {
-             approved: approved,
-                 unapproved: unapproved
-        });
+      res.render('demos', {
+        approved: approved,
+        unapproved: unapproved
+      });
     }).catch(error => {
-        console.log(error);
+      console.log(error);
     });
   }).catch(error => {
     console.log(error);
-   });
+  });
 });
 
 
 //delete from db
-app.post('/delete/:id', function(req,res) {
+app.post('/delete/:id', function (req, res) {
   console.log(req.params);
-  database.findOneAndRemove({_id: req.params.id}, function(err,data) {
-      if(err) {
+  database.findOneAndRemove({ _id: req.params.id }, function (err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      const filePath = path.join(__dirname, './demos/' + data.demopath);
+      console.log(filePath);
+      fs.unlink(filePath, function (err) {
+        if (err) {
           console.log(err);
-      } else {
-        const filePath = path.join(__dirname, './demos/' + data.demopath);
-        console.log(filePath);
-          fs.unlink(filePath, function(err) {
-              if(err) {
-                  console.log(err);
-                  return;
-              } else {
-                  console.log("Deleted");
-                  res.redirect("/getDemos");
-              }
-          });
-      }
+          return;
+        } else {
+          console.log("Deleted");
+          res.redirect("/getDemos");
+        }
+      });
+    }
   });
 });
 
 //approve track
-app.post('/approve/:id', function(req,res) {
+app.post('/approve/:id', function (req, res) {
   console.log(req.params);
   database.updateOne({ _id: req.params.id }, { $set: { approved: true } }, (err2, result) => {
     if (err2) {
@@ -155,46 +155,46 @@ app.post('/approve/:id', function(req,res) {
 });
 
 //register
-app.post('/register', function(req, res, next) {
+app.post('/register', function (req, res, next) {
   const username = req.body.username,
     password = req.body.password,
     registercode = req.body.registercode;
-    SignupCode.findOne({ pin: registercode, used: false }, function(err, signupCode) {
-  if (err) {
+  SignupCode.findOne({ pin: registercode, used: false }, function (err, signupCode) {
+    if (err) {
       console.log(err);
-  } else {
-      if(!signupCode) {
-          console.log(signupCode);
-          console.log('No signup code found!');
-          res.redirect('/error-page');
-          return;
+    } else {
+      if (!signupCode) {
+        console.log(signupCode);
+        console.log('No signup code found!');
+        res.redirect('/error-page');
+        return;
       }
-      SignupCode.updateOne({ pin: registercode }, { $set: { used: true } }, function(err,data) {
-          if (err) {
-              console.log(err);
-          } else {
-              User.register(new User({ username: username }), password, function(err, user) {
-                  if (err) {
-                      console.log(err)
-                  } else {
-                      console.log('user registered!');
+      SignupCode.updateOne({ pin: registercode }, { $set: { used: true } }, function (err, data) {
+        if (err) {
+          console.log(err);
+        } else {
+          User.register(new User({ username: username }), password, function (err, user) {
+            if (err) {
+              console.log(err)
+            } else {
+              console.log('user registered!');
 
-                      res.redirect('/getDemos');  
-                  }
-              });
-          }
+              res.redirect('/getDemos');
+            }
+          });
+        }
       });
-  }
-});
+    }
+  });
 });
 
 //login
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function(req, res) {
-    res.redirect('/getDemos');
-  });
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function (req, res) {
+  res.redirect('/getDemos');
+});
 
 //logout
-app.get('/logout', function(req, res) {
+app.get('/logout', function (req, res) {
   req.logout();
   res.redirect('/');
 });
@@ -211,6 +211,6 @@ var routes = require('./routes/index');
 app.use('/', routes);
 
 // server
-app.listen(3000, function(){
+app.listen(3000, function () {
   console.log('Application is open in localhost:3000.');
 });
