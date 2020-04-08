@@ -70,7 +70,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//db shiz
+//database schemas
 const database = require('./models/Demo.js');
 const SignupCode = require('./models/signupCode.js');
 
@@ -159,7 +159,7 @@ app.post('/register', function(req, res, next) {
   const username = req.body.username,
     password = req.body.password,
     registercode = req.body.registercode;
-SignupCode.findOne({ pin: registercode, active: true }, function(err, signupCode) {
+    SignupCode.findOne({ pin: registercode, used: false }, function(err, signupCode) {
   if (err) {
       console.log(err);
   } else {
@@ -169,7 +169,7 @@ SignupCode.findOne({ pin: registercode, active: true }, function(err, signupCode
           res.redirect('/error-page');
           return;
       }
-    SignupCode.updateOne({ pin: registercode }, { $set: { active: false } }, function(err,data) {
+      SignupCode.updateOne({ pin: registercode }, { $set: { used: true } }, function(err,data) {
           if (err) {
               console.log(err);
           } else {
